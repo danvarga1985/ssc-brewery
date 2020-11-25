@@ -54,6 +54,7 @@ public class BeerControllerIT {
                 .build();
     }
 
+    // @WithMockUser mocks an authenticated user for the test method - user can be anything, since it's mocked.
     @WithMockUser("spring")
     @Test
     void findBeers() throws Exception{
@@ -63,6 +64,7 @@ public class BeerControllerIT {
                 .andExpect(model().attributeExists("beer"));
     }
 
+    // '.with(httpBasic())' authenticated a real user for the tests - credentials have to be valid.
     @Test
     void findBeersWithHttpBasic() throws Exception{
         mockMvc.perform(get("/beers/find").with(httpBasic("spring", "guru")))
