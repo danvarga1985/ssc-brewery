@@ -1,20 +1,27 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 @Configuration
 //@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -62,16 +69,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                // {noop} - indicates pain text password
-                .password("{noop}guru")
+                // {noop} - indicates plain text password
+//                .password("{noop}guru")
+                .password("{bcrypt}$2a$10$iu/pmpexjVOcrtg6A9BdqOZ1Wq2myrSsOBt61WErW1uNMSTMDRQKK")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("{noop}password")
+                .password("{sha256}d96d86a1f8a34630367972d96db105b491d5187871af135bd42af0fa438969db65b07cc0055d5ea7")
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("{noop}tiger")
+//                .password("{noop}tiger")
+                .password("{bcrypt15}$2a$15$7ON8i8h3fcSkFVq1gnFogOLJrUtYoFWDT202TU/epkajxje.WW.EG")
                 .roles("CUSTOMER");
+
     }
 }
