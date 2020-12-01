@@ -8,9 +8,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Created by jt on 6/12/20.
- */
 @WebMvcTest
 
 public class BeerControllerIT extends BaseIT {
@@ -49,7 +46,7 @@ public class BeerControllerIT extends BaseIT {
                 .andExpect(model().attributeExists("beer"));
     }
 
-    // '.with(httpBasic())' authenticated a real user for the tests - credentials have to be valid.
+    // '.with(httpBasic())' authenticate a real user for the tests - credentials have to be valid.
     @Test
     void findBeersWithHttpBasic() throws Exception {
         mockMvc.perform(get("/beers/find").with(httpBasic("spring", "guru")))
