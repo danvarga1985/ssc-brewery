@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -15,7 +16,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+//@WebMvcTest
+@SpringBootTest
 public class BeerRestControllerIT extends BaseIT {
 
     @Autowired
@@ -49,13 +51,13 @@ public class BeerRestControllerIT extends BaseIT {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void deleteBeer() throws Exception {
-        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
-                .header("Api-Key", "spring")
-                .header("Api-Secret", "guru"))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void deleteBeer() throws Exception {
+//        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
+//                .header("Api-Key", "spring")
+//                .header("Api-Secret", "guru"))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     void deleteBeerHttpBasic() throws Exception {
@@ -77,12 +79,12 @@ public class BeerRestControllerIT extends BaseIT {
                 .andExpect(status().isUnauthorized());
     }
 
-    @Test
-    void deleteBeerUrl() throws Exception{
-        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
-                .param("apiKey","spring").param("apiSecret", "guru"))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void deleteBeerUrl() throws Exception{
+//        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
+//                .param("apiKey","spring").param("apiSecret", "guru"))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     void deleteBeerBadCredsUrl() throws Exception{
