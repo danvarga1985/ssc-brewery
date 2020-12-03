@@ -38,23 +38,45 @@ public class BeerControllerIT extends BaseIT {
     }
 
     // @WithMockUser mocks an authenticated user for the test method - user can be anything, since it's mocked.
-    @WithMockUser("spring")
-    @Test
-    void findBeers() throws Exception {
-        mockMvc.perform(get("/beers/find"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("beers/findBeers"))
-                .andExpect(model().attributeExists("beer"));
-    }
+//    @WithMockUser("spring")
+//    @Test
+//    void findBeers() throws Exception {
+//        mockMvc.perform(get("/beers/find"))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("beers/findBeers"))
+//                .andExpect(model().attributeExists("beer"));
+//    }
 
     // '.with(httpBasic())' authenticate a real user for the tests - credentials have to be valid.
     @Test
-    void findBeersWithHttpBasic() throws Exception {
+    void findBeersWithHttpBasicWithAdmin() throws Exception {
         mockMvc.perform(get("/beers/find").with(httpBasic("spring", "guru")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/findBeers"))
                 .andExpect(model().attributeExists("beer"));
     }
 
+    @Test
+    void findBeersWithHttpBasicWithUser() throws Exception {
+        mockMvc.perform(get("/beers/find").with(httpBasic("user", "password")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/findBeers"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
+    @Test
+    void findBeersWithHttpBasicWithCustomer() throws Exception {
+        mockMvc.perform(get("/beers/find").with(httpBasic("scott", "tiger")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/findBeers"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
+
+    @Test
+    void findBeersWithHttpBasicUnauthenticated() throws Exception {
+        mockMvc.perform(get("/beers/find"))
+                .andExpect(status().isUnauthorized());
+    }
 
 }

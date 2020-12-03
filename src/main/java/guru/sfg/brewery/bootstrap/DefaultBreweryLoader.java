@@ -141,9 +141,9 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     }
 
     private void loadAuthorityData() {
-        Authority admin = Authority.builder().role("ADMIN").build();
-        Authority userRole = Authority.builder().role("USER").build();
-        Authority customer = Authority.builder().role("CUSTOMER").build();
+        Authority admin = Authority.builder().role("ROLE_ADMIN").build();
+        Authority userRole = Authority.builder().role("ROLE_USER").build();
+        Authority customer = Authority.builder().role("ROLE_CUSTOMER").build();
 
         authorityRepository.save(admin);
         authorityRepository.save(userRole);
@@ -158,7 +158,7 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                 .password(passwordEncoder.encode("guru"))
                 .authority(
                         authorities.stream()
-                                .filter(auth -> auth.getRole().equals("ADMIN"))
+                                .filter(auth -> auth.getRole().equals("ROLE_ADMIN"))
                                 .findFirst().get())
                 .build();
 
@@ -167,7 +167,7 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                 .password(passwordEncoder.encode("password"))
                 .authority(
                         authorities.stream()
-                                .filter(auth -> auth.getRole().equals("USER"))
+                                .filter(auth -> auth.getRole().equals("ROLE_USER"))
                                 .findFirst().get())
                 .build();
 
@@ -176,7 +176,7 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                 .password(passwordEncoder.encode("tiger"))
                 .authority(
                         authorities.stream()
-                                .filter(auth -> auth.getRole().equals("CUSTOMER"))
+                                .filter(auth -> auth.getRole().equals("ROLE_CUSTOMER"))
                                 .findFirst().get())
                 .build();
 

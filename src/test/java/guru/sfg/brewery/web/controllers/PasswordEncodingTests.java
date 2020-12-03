@@ -1,5 +1,6 @@
 package guru.sfg.brewery.web.controllers;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.config.ldap.LdapServerBeanDefinitionParser;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +15,7 @@ import javax.naming.ldap.LdapContext;
 import static org.junit.Assert.assertTrue;
 
 
+@Disabled
 public class PasswordEncodingTests {
 
     static final String PASSWORD = "password";
