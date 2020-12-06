@@ -9,12 +9,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
 @Configuration
 //@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 // Less used method (securedEnabled) - needs @Secured annotation on the Controller method. Unable to use it with SPeL.
-//@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+//@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
@@ -28,6 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        filter.setAuthenticationManager(authenticationManager);
 //        return filter;
 //    }
+
+    // Needed for use with Spring Data JPA SpEL
+    @Bean
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+        return new SecurityEvaluationContextExtension();
+    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -55,18 +62,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     */
                     authorize
                             .antMatchers("/h2-console/**").permitAll() //do not use in production!
-                            .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
-                            .antMatchers(HttpMethod.GET, "/api/v1/beer/**")
-                                .hasAnyRole("ADMIN", "CUSTOMER", "USER")
-//                            .mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
-                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
-                                .hasAnyRole("ADMIN", "CUSTOMER", "USER")
-                            .mvcMatchers("/brewery/breweries")
-                                .hasAnyRole("ADMIN", "CUSTOMER")
-                            .mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries")
-                                .hasAnyRole("ADMIN", "CUSTOMER")
-                            .mvcMatchers("/beers/find", "/beers/{beerId}")
-                                .hasAnyRole("ADMIN", "CUSTOMER", "USER");
+                            .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll();
+//                            .antMatchers(HttpMethod.GET, "/api/v1/beer/**")
+//                                .hasAnyRole("ADMIN", "CUSTOMER", "USER")
+//                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
+//                                .hasAnyRole("ADMIN", "CUSTOMER", "USER")
+//                            .mvcMatchers("/beers/find", "/beers/{beerId}")
+//                                .hasAnyRole("ADMIN", "CUSTOMER", "USER");
                 })
                 .authorizeRequests()
                 .anyRequest().authenticated()
