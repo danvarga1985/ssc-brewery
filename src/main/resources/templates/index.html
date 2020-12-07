@@ -17,7 +17,8 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home')}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home')}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <title>SFG Brewery</title>
@@ -27,7 +28,31 @@
 
 <div class="row">
     <div class="col-md-12">
-        <img class="img-responsive" src="../static/resources/images/brewery.png" th:src="@{/resources/images/brewery.png}"/>
+<!--        <p th:if="${loginError}" class="error">Wrong Username or password</p>-->
+        <div th:if="${param.error}" class="alert alert-danger">Invalid Username of Password</div>
+        <div th:if="${param.logout}" class="alert alert-success">You have logged out</div>
+        <form th:action="@{/login}" method="post" sec:authorize="!isAuthenticated()">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" autofocus="true" autocomplete="off">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" autofocus="true" autocomplete="off">
+            <input type="submit" value="Log In">
+        </form>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- sec:authorize allow the usage of SpEL-->
+        <p sec:authorize="isAuthenticated()" th:text="'Welcome: ' + ${#authentication?.principal?.username}">User</p>
+        <p><a th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a></p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <img class="img-responsive" src="../static/resources/images/brewery.png"
+             th:src="@{/resources/images/brewery.png}"/>
     </div>
 </div>
 
