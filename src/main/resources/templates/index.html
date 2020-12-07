@@ -37,6 +37,9 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" autofocus="true" autocomplete="off">
             <input type="submit" value="Log In">
+            <br>
+            <label for="remember-me">Remember Me:</label>
+            <input type="checkbox" id="remember-me" name="remember-me"/>
         </form>
 
     </div>
@@ -48,7 +51,7 @@
         <p><a th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a></p>
     </div>
 </div>
-
+<br>
 <div class="row">
     <div class="col-md-12">
         <img class="img-responsive" src="../static/resources/images/brewery.png"
