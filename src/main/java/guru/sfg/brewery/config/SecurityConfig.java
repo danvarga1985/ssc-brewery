@@ -4,8 +4,10 @@ import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 // Less used method (securedEnabled) - needs @Secured annotation on the Controller method. Unable to use it with SPeL.
 //@EnableGlobalMethodSecurity(securedEnabled = true)
@@ -87,8 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             .defaultSuccessUrl("/")
                             .failureUrl("/?error");
                 })
-                .logout(logutConfigurer -> {
-                    logutConfigurer
+                .logout(logoutConfigurer -> {
+                    logoutConfigurer
                             .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                             .logoutSuccessUrl("/?logout")
                             .permitAll();
