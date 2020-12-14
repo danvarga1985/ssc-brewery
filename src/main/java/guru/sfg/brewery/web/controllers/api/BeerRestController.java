@@ -121,6 +121,8 @@ public class BeerRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // Apply the CORS config for this method, even though it is configured on different endpoints.
+    @CrossOrigin
     @BeerDeletePermission
     @DeleteMapping({"beer/{beerId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -130,7 +132,7 @@ public class BeerRestController {
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<List> badReqeustHandler(ConstraintViolationException e) {
+    ResponseEntity<List> badRequestHandler(ConstraintViolationException e) {
         List<String> errors = new ArrayList<>(e.getConstraintViolations().size());
 
         e.getConstraintViolations().forEach(constraintViolation -> {

@@ -66,8 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(google2faFilter, SessionManagementFilter.class);
 
-        http
-
+        http.cors().and()
                 .authorizeRequests(authorize -> {
                     /*
                      A. Intercept the authorize request and set permit all, disabling further authentication.
@@ -105,8 +104,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .ignoringAntMatchers("/h2-console/**", "/api/**")
                 .and().rememberMe()
-                    .tokenRepository(persistentTokenRepository)
-                    .userDetailsService(userDetailsService);
+                .tokenRepository(persistentTokenRepository)
+                .userDetailsService(userDetailsService);
 //                .and().rememberMe()
 //                    .key("sfg-key")
 //                    .userDetailsService(userDetailsService);
